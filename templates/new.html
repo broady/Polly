@@ -1,0 +1,27 @@
+{{template "_header.html"}}
+<form action="/add" method="post">
+  <!--
+  <fieldset>
+    <legend>New Poll</legend>
+  </fieldset>
+  -->
+  <ul>
+    <li>
+      <label>Title</label>
+      <input name="title" type="text">
+    </li>
+  </ul>
+  <div class="kd-buttonbar">
+    <a class="kd-button" id="add-option">Add Option</a>
+  </div>
+</form>
+
+<li id="option-template">
+  <fieldset><legend>Option %n%</legend>
+    <label>Text</label>
+    <input name="title%n%" type="text">
+    <label>Image URL (optional)</label>
+    <input name="img%n%" type="text">
+  </fieldset>
+</li>
+{{template "_footer.html"}}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Polly</title>
+    <link rel="stylesheet" href="static/kd_components.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="static/kd_components_google.css" type="text/css" media="screen" charset="utf-8">
+    <style>
+      .kd-appbar {
+        background: whitesmoke;
+      }
+      #wrap {
+        margin-left: 44px;
+        margin-top: 100px;
+        padding: 0;
+      }
+      .kd-buttonbar .kd-button {
+        margin-left: 0;
+      }
+      .kd-appbar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+      }
+      #option-template {
+        display: none;
+      }
+      .kd-button {
+        -webkit-user-select: none;
+        cursor: pointer;
+      }
+      fieldset {
+        margin-bottom: 20px;
+      }
+      body {
+        margin-bottom: 50px;
+      }
+      fieldset legend, label {
+        font-weight: bold;
+      }
+      fieldset label {
+        font-weight: normal;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>
+      $(function() {
+        $(/new/.test(location.pathname) ? '#new' : '#save').remove();
+        var optionTemplate = $('#option-template');
+        if (optionTemplate.length) {
+          var optionCount = 0;
+          var addOption = function() {
+            var option = optionTemplate.html().replace(/%n%/g, ++optionCount);
+            $('form ul').append(option);
+            window.scrollTo(0, 1e10);
+          }
+          addOption();
+          addOption();
+          addOption();
+          $('#add-option').click(addOption);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="kd-appbar">
+      <h2 class="kd-appname"><a href="/">Polly</a></h2>
+      <div class="kd-buttonbar left">
+        <a class="kd-button kd-button-action" id="new" href="/new">Create</a>
+        <a class="kd-button kd-button-submit" id="save" href="#">Save</a>
+      </div>
+    </div>
+    <div id="wrap">
