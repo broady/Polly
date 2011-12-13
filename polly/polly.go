@@ -2,6 +2,7 @@ package polly
 
 import (
 	"fmt"
+	"rand"
 	"template"
 	"os"
 	"strings"
@@ -141,11 +142,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		TotalVotes: 0,
 	}
 
-	pollKey, err := datastore.Put(c, datastore.NewIncompleteKey(c, "poll", nil), &poll)
-	if err != nil {
-		writeError(c, w, err)
-		return
-	}
+	pollKey := datastore.NewKey(c, "poll", "", rand.Int63(), nil)
 	for i := 1; ; i++ {
 		name := r.FormValue(fmt.Sprintf("title%d", i))
 		if name == "" {
@@ -170,7 +167,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		poll.Options++
 	}
 
-	pollKey, err = datastore.Put(c, pollKey, &poll)
+	pollKey, err := datastore.Put(c, pollKey, &poll)
 	if err != nil {
 		writeError(c, w, err)
 		return
@@ -263,23 +260,16 @@ func fetchPoll(c appengine.Context, strid string) (*Poll, os.Error) {
 }
 
 func fetchOptions(c appengine.Context, poll *Poll) ([]*Option, os.Error) {
-	fmt.Printf("%d\n", poll.Id)
-	fmt.Printf("%d\n", poll.Options)
-
 	dst := make([]interface{}, poll.Options)
 	options := make([]*Option, poll.Options)
 	keys := make([]*datastore.Key, poll.Options)
 
 	pollKey := datastore.NewKey(c, "poll", "", poll.Id, nil)
-	fmt.Printf("%v\n", pollKey)
-	fmt.Printf("%v\n", keys)
 	for i := range keys {
 		keys[i] = datastore.NewKey(c, "option", "", int64(i+1), pollKey)
 		dst[i] = new(Option)
 	}
-	fmt.Printf("%v\n", keys)
 	err := datastore.GetMulti(c, keys, dst)
-	fmt.Printf("%s %v\n", err, dst)
 	if err != nil {
 		return nil, err
 	}
@@ -289,8 +279,6 @@ func fetchOptions(c appengine.Context, poll *Poll) ([]*Option, os.Error) {
 			options[i] = opt
 			opt.Poll = pollKey
 			opt.Id = keys[i].IntID()
-		} else {
-			fmt.Printf("not ok!")
 		}
 	}
 
