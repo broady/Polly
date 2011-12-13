@@ -1,7 +1,9 @@
 {{template "_header.html"}}
 
-New!
-{{.foo}}
-<a href="foo">bar</a>
+<h1>Your Polls</h1>
+{{range .}}
+<a href="/poll/{{.Id}}">{{.Name|html}}</a> ({{.TotalVotes}} votes)
+<br>
+{{end}}
 
 {{template "_footer.html"}}

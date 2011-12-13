@@ -1,8 +1,22 @@
 {{template "_header.html"}}
+{{$orig = .}}
+{{$pollid = .pollid}}
+
 <h1>{{.poll.Name|html}}</h1>
 {{range .options}}
-{{.Text|html}}
+<form action="/vote/{{.Poll.IntID}}/{{.Id}}" method="post">
+  <button>{{.Text|html}}</button><br>
 {{if .Image}}<img src="{{.Image|html}}">{{end}}
-<br>
+</form>
 {{end}}
+<script>
+  $(function() {
+    $('form').submit(function(e) {
+      $.get($(this).attr('action'), function(d) {
+        alert(d);
+      });
+      e.preventDefault();
+    });
+  });
+</script>
 {{template "_footer.html"}}

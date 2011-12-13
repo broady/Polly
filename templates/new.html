@@ -29,10 +29,10 @@
     var optionTemplate = $('#option-template');
     if (optionTemplate.length) {
       var optionCount = 0;
-      var addOption = function() {
+      var addOption = function(e) {
         var option = optionTemplate.html().replace(/%n%/g, ++optionCount);
         $('form ul').append(option);
-        window.scrollTo(0, 1e10);
+        e && window.scrollTo(0, 1e10);
       }
       addOption();
       addOption();
@@ -41,6 +41,24 @@
     }
     $('#save').click(function() {
       $('form').submit();
+    });
+    $('form').submit(function(e) {
+      var params = {};
+      $(this)
+      .find("input[checked], input[type='text'], input[type='hidden'], input[type='password'], input[type='submit'], option[selected], textarea")
+      .filter(":enabled")
+      .each(function() {
+        params[this.name || this.id || this.parentNode.name || this.parentNode.id] = this.value;
+      });
+
+      $.post($(this).attr('action'), params)
+      .success(function(url) {
+        window.location = url;
+      })
+      .error(function(err) {
+        alert(err.responseText);
+      });
+      e.preventDefault();
     });
   });
 </script>
