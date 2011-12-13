@@ -4140,6 +4140,7 @@ Component: Scrollbars
 	border-bottom:1px solid rgba(0, 0, 0, 0.3);
 }
 
+/** cbro
 ::-webkit-scrollbar {
 	width: 16px;
 	height: 16px;
@@ -4155,6 +4156,7 @@ Component: Scrollbars
 	width:4px;
 }*/
 
+/** cbro
 ::-webkit-scrollbar-button:start:decrement,
 ::-webkit-scrollbar-button:end:increment {
 	display: block;
@@ -4224,6 +4226,7 @@ Component: Scrollbars
                      	inset -1px -1px 0px  rgba(0,0,0,0.07);
 }*/
 
+/** cbro
 .inline-scroller .scrollBarInner::-webkit-scrollbar-thumb:vertical {
 	border-left: 6px solid transparent;
 	border-right: 1px solid transparent;

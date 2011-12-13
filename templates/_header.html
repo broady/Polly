@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>Polly</title>
-    <link rel="stylesheet" href="static/kd_components.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="static/kd_components_google.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="/static/kd_components.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="/static/kd_components_google.css" type="text/css" media="screen" charset="utf-8">
     <style>
       .kd-appbar {
         background: whitesmoke;
@@ -46,19 +46,6 @@
     <script>
       $(function() {
         $(/new/.test(location.pathname) ? '#new' : '#save').remove();
-        var optionTemplate = $('#option-template');
-        if (optionTemplate.length) {
-          var optionCount = 0;
-          var addOption = function() {
-            var option = optionTemplate.html().replace(/%n%/g, ++optionCount);
-            $('form ul').append(option);
-            window.scrollTo(0, 1e10);
-          }
-          addOption();
-          addOption();
-          addOption();
-          $('#add-option').click(addOption);
-        }
       });
     </script>
   </head>
