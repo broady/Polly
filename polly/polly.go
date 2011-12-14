@@ -35,8 +35,7 @@ type Option struct {
 }
 
 type Vote struct {
-	Owner string
-
+	Owner  string
 	Option *datastore.Key
 }
 
@@ -215,6 +214,8 @@ func pollHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	vote, _ := fetchVote(c, poll)
+
 	options, err := fetchOptions(c, poll)
 	if err != nil {
 		writeError(c, w, err)
@@ -229,6 +230,7 @@ func pollHandler(w http.ResponseWriter, r *http.Request) {
 		"super":   user.IsAdmin(c) || poll.Owner == u.Id,
 		"pollid":  parts[2],
 		"userid":  u.Id,
+		"vote":    vote,
 	}
 
 	templates.Execute(w, "poll.html", v)
@@ -309,4 +311,17 @@ func fetchOptions(c appengine.Context, poll *Poll) ([]*Option, os.Error) {
 	}
 
 	return options, err
+}
+
+func fetchVote(c appengine.Context, poll *Poll) (*Vote, os.Error) {
+	userId := user.Current(c).Id
+	vote := new(Vote)
+	pollKey := datastore.NewKey(c, "poll", "", poll.Id, nil)
+	voteKey := datastore.NewKey(c, "vote", userId, 0, pollKey)
+
+	err := datastore.Get(c, voteKey, vote)
+	if err != nil {
+		return nil, err
+	}
+	return vote, nil
 }

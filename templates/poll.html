@@ -53,6 +53,7 @@
 {{$super = .super}}
 
 <h1>{{.poll.Name|html}} <span>{{if $super}}(super user){{end}}</span></h1>
+{{if .vote}}<p>You’ve already voted. You’re free to change your vote.</p>{{end}}
 {{range .options}}
 <form action="/vote/{{.Poll.IntID}}/{{.Id}}" method="post" class="polly-option">
   <span>{{.Text|html}} {{if $super}}<b>{{.Votes}}</b>{{end}}</span>
