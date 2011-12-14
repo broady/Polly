@@ -19,7 +19,7 @@
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, .3);
-    padding: 0 20px;
+    padding: 0 10px;
     color: white;
     font-weight: bold;
     height: 30px;
@@ -36,14 +36,22 @@
     width: 100%;
     padding: 10px 0;
   }
+  h1 span {
+    font-size: .8em;
+    color: grey;
+  }
+  .polly-option span b {
+    float: right;
+  }
 </style>
 {{$orig = .}}
 {{$pollid = .pollid}}
+{{$super = .super}}
 
-<h1>{{.poll.Name|html}}</h1>
+<h1>{{.poll.Name|html}} <span>{{if $super}}(super user){{end}}</span></h1>
 {{range .options}}
 <form action="/vote/{{.Poll.IntID}}/{{.Id}}" method="post" class="polly-option">
-  <span>{{.Text|html}}</span>
+  <span>{{.Text|html}} {{if $super}}<b>{{.Votes}}</b>{{end}}</span>
   <div>
     <a href="#" class="vote kd-button">Vote</a>
   </div>
