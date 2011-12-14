@@ -2,7 +2,8 @@ package polly
 
 import (
 	"fmt"
-	"rand"
+	"big"
+	"crypto/rand"
 	"template"
 	"os"
 	"strings"
@@ -41,6 +42,7 @@ type Vote struct {
 
 var (
 	templates = template.SetMust(template.ParseTemplateGlob("templates/*.html"))
+	maxId = big.NewInt(9223372036854775807)
 )
 
 func init() {
@@ -152,7 +154,12 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	pollKey := datastore.NewKey(c, "poll", "", rand.Int63(), nil)
+	n, err := rand.Int(rand.Reader, maxId)
+	if err != nil {
+		writeError(c, w, err)
+		return
+	}
+	pollKey := datastore.NewKey(c, "poll", "", n.Int64(), nil)
 	for i := 1; ; i++ {
 		img := r.FormValue(fmt.Sprintf("img%d", i))
 		if img == "" {
@@ -177,7 +184,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		poll.Options++
 	}
 
-	pollKey, err := datastore.Put(c, pollKey, &poll)
+	pollKey, err = datastore.Put(c, pollKey, &poll)
 	if err != nil {
 		writeError(c, w, err)
 		return
@@ -217,6 +224,7 @@ func pollHandler(w http.ResponseWriter, r *http.Request) {
 		"options": options,
 		"super":   user.IsAdmin(c) || poll.Owner == u.Id,
 		"pollid":  parts[2],
+		"userid":  u.Id,
 	}
 
 	templates.Execute(w, "poll.html", v)
