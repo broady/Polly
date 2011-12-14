@@ -1,9 +1,10 @@
 {{template "_header.html"}}
 
 <h1>Your Polls</h1>
+<ul>
 {{range .}}
-<a href="/poll/{{.Id}}">{{.Name|html}}</a> ({{.TotalVotes}} votes)
-<br>
+<li><a href="/poll/{{.Id}}">{{.Name|html}}</a> ({{.TotalVotes}} votes)</li>
 {{end}}
+</ul>
 
 {{template "_footer.html"}}

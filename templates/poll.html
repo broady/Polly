@@ -7,6 +7,7 @@
     float: left;
     margin: 30px;
     margin-left: 0;
+    padding-top: 30px;
     height: {{.poll.MaxDimension}}px;
   }
   form.polly-option img {
@@ -18,7 +19,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, .3);
+    background: #202020;
     padding: 0 10px;
     color: white;
     font-weight: bold;
@@ -44,8 +45,6 @@
     float: right;
   }
 </style>
-{{$orig = .}}
-{{$pollid = .pollid}}
 {{$super = .super}}
 
 <h1>{{.poll.Name|html}} <span>{{if $super}}(super user){{end}}</span></h1>
