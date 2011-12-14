@@ -10,6 +10,10 @@
       <label>Title</label>
       <input name="title" type="text">
     </li>
+    <li>
+      <label>Max dimension (for images)</label>
+      <input name="dimension" type="text" value="300">
+    </li>
   </ul>
   <div class="kd-buttonbar">
     <a class="kd-button" id="add-option">Add Option</a>
@@ -18,10 +22,10 @@
 
 <li id="option-template">
   <fieldset><legend>Option %n%</legend>
-    <label>Text</label>
-    <input name="title%n%" type="text">
-    <label>Image URL (optional)</label>
+    <label>Image URL</label>
     <input name="img%n%" type="text">
+    <label>Text (optional)</label>
+    <input name="title%n%" type="text">
   </fieldset>
 </li>
 <script>

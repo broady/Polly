@@ -1,16 +1,62 @@
 {{template "_header.html"}}
+<style>
+  form.polly-option {
+    position: relative;
+    display: block;
+    width: inherit;
+    float: left;
+    margin: 30px;
+    margin-left: 0;
+    height: {{.poll.MaxDimension}}px;
+  }
+  form.polly-option img {
+    max-width: {{.poll.MaxDimension}}px;
+    max-height: {{.poll.MaxDimension}}px;
+  }
+  form.polly-option span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .3);
+    padding: 0 20px;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+  }
+  form.polly-option:hover div {
+    display: block;
+  }
+  form.polly-option div {
+    display: none;
+    position: absolute;
+    top: 30px;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+  }
+</style>
 {{$orig = .}}
 {{$pollid = .pollid}}
 
 <h1>{{.poll.Name|html}}</h1>
 {{range .options}}
-<form action="/vote/{{.Poll.IntID}}/{{.Id}}" method="post">
-  <button>{{.Text|html}}</button><br>
-{{if .Image}}<img src="{{.Image|html}}">{{end}}
+<form action="/vote/{{.Poll.IntID}}/{{.Id}}" method="post" class="polly-option">
+  <span>{{.Text|html}}</span>
+  <div>
+    <a href="#" class="vote kd-button">Vote</a>
+  </div>
+  <img src="{{.Image|html}}">
 </form>
 {{end}}
 <script>
   $(function() {
+    $('.vote').click(function(e) {
+      $(this).parents('form').submit();
+      e.preventDefault();
+    });
+
     $('form').submit(function(e) {
       $.get($(this).attr('action'), function(d) {
         alert(d);

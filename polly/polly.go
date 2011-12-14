@@ -15,10 +15,11 @@ import (
 )
 
 type Poll struct {
-	Name       string
-	Owner      string
-	Options    int64
-	TotalVotes int64
+	Name         string
+	Owner        string
+	Options      int64
+	TotalVotes   int64
+	MaxDimension int64
 
 	Id int64
 }
@@ -135,17 +136,26 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Must enter title.")
 		return
 	}
+	maxDimension := r.FormValue("dimension")
 
 	poll := Poll{
-		Name:       title,
-		Owner:      u.Id,
-		TotalVotes: 0,
+		Name:         title,
+		Owner:        u.Id,
+		TotalVotes:   0,
+		MaxDimension: 300,
+	}
+
+	if maxDimension != "" {
+		d, err := strconv.Atoi64(maxDimension)
+		if err == nil {
+			poll.MaxDimension = d
+		}
 	}
 
 	pollKey := datastore.NewKey(c, "poll", "", rand.Int63(), nil)
 	for i := 1; ; i++ {
-		name := r.FormValue(fmt.Sprintf("title%d", i))
-		if name == "" {
+		img := r.FormValue(fmt.Sprintf("img%d", i))
+		if img == "" {
 			if i < 3 {
 				w.WriteHeader(http.StatusBadRequest)
 				fmt.Fprint(w, "Poll must have at least two options.")
@@ -153,7 +163,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			break
 		}
-		img := r.FormValue(fmt.Sprintf("img%d", i))
+		name := r.FormValue(fmt.Sprintf("title%d", i))
 		option := Option{
 			Text:  name,
 			Image: img,
