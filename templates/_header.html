@@ -13,24 +13,29 @@
         margin-top: 100px;
         padding: 0;
         overflow: inherit;
-        padding-bottom: 30px;
-      }
-      .pageFooter {
-        text-align: right;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: white;
+        padding-bottom: 50px;
       }
       .kd-buttonbar .kd-button {
         margin-left: 0;
       }
       .kd-appbar {
-        position: fixed;
         top: 0;
-        right: 0;
+      }
+      .pageFooter {
+        text-align: right;
+        bottom: 0;
+        background: white;
+        z-index: 9999;
+      }
+      .pageFooter, .kd-appbar {
+        position: fixed;
         left: 0;
+        right: 0;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0);
+        -webkit-transition: all .3s ease-in;
+      }
+      .pageFooter, .kd-appbar.scrolled {
+        box-shadow: 0 0 15px rgba(0, 0, 0, .1);
       }
       #option-template {
         display: none;
@@ -56,6 +61,9 @@
     <script>
       $(function() {
         $(/new/.test(location.pathname) ? '#new' : '#save').remove();
+      });
+      $(window).scroll(function() {
+        $('.kd-appbar')[window.scrollY ? 'addClass' : 'removeClass']('scrolled');
       });
     </script>
   </head>
