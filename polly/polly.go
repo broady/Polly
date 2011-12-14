@@ -42,7 +42,7 @@ type Vote struct {
 
 var (
 	templates = template.SetMust(template.ParseTemplateGlob("templates/*.html"))
-	maxId = big.NewInt(9223372036854775807)
+	maxId     = big.NewInt(9223372036854775807)
 )
 
 func init() {
@@ -72,7 +72,6 @@ func voteHandler(w http.ResponseWriter, r *http.Request) {
 	userId := user.Current(c).Id
 	pollKey := datastore.NewKey(c, "poll", "", pollId, nil)
 	optionKey := datastore.NewKey(c, "option", "", voteId, pollKey)
-
 	voteKey := datastore.NewKey(c, "vote", userId, 0, pollKey)
 
 	vote := new(Vote)
@@ -87,6 +86,9 @@ func voteHandler(w http.ResponseWriter, r *http.Request) {
 		err = datastore.Get(c, voteKey, vote)
 		if err != nil && err != datastore.ErrNoSuchEntity {
 			return err
+		}
+		if optionKey.Eq(vote.Option) {
+			return nil
 		}
 		if vote.Option != nil {
 			oldOption := new(Option)
@@ -113,6 +115,7 @@ func voteHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		option.Votes++
 		vote.Option = optionKey
+		vote.Owner = userId
 		_, err = datastore.Put(c, optionKey, option)
 		if err != nil {
 			return err
