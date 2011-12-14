@@ -72,6 +72,7 @@
     $('form').submit(function(e) {
       $.get($(this).attr('action'), function(d) {
         if (d == 'OK') {
+          window.location = '/thanks'
         } else {
           alert(d);
         }

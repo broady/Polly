@@ -50,6 +50,7 @@ func init() {
 	http.HandleFunc("/vote/", voteHandler)
 	http.HandleFunc("/new", newHandler)
 	http.HandleFunc("/add", addHandler)
+	http.HandleFunc("/thanks", thanksHandler)
 	http.HandleFunc("/", listHandler)
 }
 
@@ -233,6 +234,10 @@ func pollHandler(w http.ResponseWriter, r *http.Request) {
 	templates.Execute(w, "poll.html", v)
 }
 
+func thanksHandler(w http.ResponseWriter, r *http.Request) {
+	templates.Execute(w, "thanks.html", nil)
+}
+
 func listHandler(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
@@ -304,7 +309,4 @@ func fetchOptions(c appengine.Context, poll *Poll) ([]*Option, os.Error) {
 	}
 
 	return options, err
-}
-
-func fetchVote(c, poll *Poll, user string) {
 }
