@@ -1,4 +1,4 @@
-application: helloworld
+application: google.com:polly
 version: 1
 runtime: go
 api_version: 3
